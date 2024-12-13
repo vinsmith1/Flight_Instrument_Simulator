@@ -85,6 +85,7 @@ def ConvertTrackLog(input_csv_filename=None, framerate=30):
     data['Timestamp'] = elapsed_times
     
     # Calculate keyframe number from timestamp
+    # This was moved to the blender file so the keyframes could be calculated by blender according to the selected framerate
     #keyframes = []
     #for t in data['Timestamp']:
     #    keyframes.append(round(t * framerate))
