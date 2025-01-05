@@ -1,4 +1,4 @@
-# Flight_Instrument_Simulator
+# Flight Instrument Simulator
 A set of tools that can create motion graphics of some flight instruments using actual flight data logged by ForeFlight, a popular "electronic flight bag" (EFD) used by many pilots.
 
 ## Introduction
@@ -43,14 +43,24 @@ The second method uses blender and its python scripting feature. Flight instrume
 
 
 ### Running the python script in Blender
-Details to be completed.
+This section is still a work-in-progress.
+
+Blender 4.3 was used to create the project file.
+
+The `.blend` file contains all the instrument graphics. 
 
 Basically, open the `.blend` file in Blender, click on the "Scripting" tab, and click the arrow next to the `main.py` to run. It may take a while for the script to process all the keyframes.
-You can use your own tracklog downloaded from ForeFlight. Tracklog should be located in the same folder as the `.blend` file and be named `tracklog.csv`. An example tracklog is included.
+You can use your own tracklog downloaded from ForeFlight. The tracklogto be processed must be located in the same folder as the `.blend` file and be named `tracklog.csv`. An example tracklog is included.
 
-Once all the keyframes are configured, just render the output as you see fit.
+![image](./documentation/blender_run_script.png)]
 
-The `.blend` file contains all the instrument graphics. At this time, the basic graphics will animate, but additional work is needed to improve the look.
+Once all the keyframes are configured, just render the output as you see fit. Use of Blender is beyond the scope of this project...there are plenty of Youtube tutorials that will help you render the output.
+
+This is what the output from Blender currently looks like:
+
+![image](./documentation/blender_output.png)
+
+At this time, the basic graphics will animate, but additional work is needed to improve the look.
 
 ## Why bother with this anyway?
 
