@@ -1,15 +1,12 @@
-#from build_AI import build_AI
 from build_instrument_panel import build_instrument_panel
 
-#filename = 'tracklog_test'
 filename = 'tracklog.csv'
 
 # write only the csv output file?
 # True = only write the csv output file without overwriting the mp4 file
 # False = write video mp4 file and csv file
-logOnly = False
+logOnly = True
 
-#build_AI(filename, logOnly)
 build_instrument_panel(filename, logOnly)
 
 # place AI on frame:

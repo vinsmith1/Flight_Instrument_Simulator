@@ -10,9 +10,12 @@
 # Course data is modified so that they don't wrap around from 359 to 0 and from 0 to 359 as the course changes.
 # Speed data is modified so that -1 is changed to 0
 
+# ForeFlight track log format
+# first three rows are headers
+# fourth and remaining rows contain data
+
 import time
 import csv
-
 
 def convert_tracklog(input_csv_filename=None, write_data_log=False):
     """Convert a ForeFlight tracklog in csv format to an output format for use in animating graphical flight instruments in Blender
@@ -35,8 +38,6 @@ def convert_tracklog(input_csv_filename=None, write_data_log=False):
         return None
   
     f = open(input_csv_filename, newline='')
-    # log = csv.reader(data, delimiter=',') # <-- this was the old method of doing it
-    # Read the entire file at once instead of line-by-line
     raw_input_data = list(csv.reader(f, delimiter=','))
     
     # Omit the first two rows from the ForeFlight log as these contain other information
@@ -88,22 +89,15 @@ def convert_tracklog(input_csv_filename=None, write_data_log=False):
         elapsed_times.append(item-start_time)
     data['Timestamp'] = elapsed_times
     
-    # Calculate keyframe number from timestamp
-    # This was moved to the blender file so the keyframes could be calculated by blender according to the selected framerate
-    #keyframes = []
-    #for t in data['Timestamp']:
-    #    keyframes.append(round(t * framerate))
-    #data['Keyframe'] = keyframes
-    
     # Create a column identifying if a row contains "Valid" data
-    # If course = -1.0 and speed = 0.0, "valid" should be 0, otherwise valid should be 1
+    # If course = -1.0 and speed = 0.0, "valid" should be False, otherwise valid should be True
     # Looking at a few logs shows that course = -1 and speed = 0 always at the same time, so it is sufficient to just check one
     valid = []
     for c in data['Course']:
         if c < 0:
-            valid.append(0)
+            valid.append(False)
         else:
-            valid.append(1)
+            valid.append(True)
     data['Valid'] = valid
 
     # Modify course to eliminate wrapping from 359° <-> 0°
@@ -114,30 +108,25 @@ def convert_tracklog(input_csv_filename=None, write_data_log=False):
     adjusted_course = []
     initialized = False
     current_course = 0
-
     for course, valid in zip(data['Course'], data['Valid']):
         if not valid:
             # Before initialization, replace -1 with 0; after, repeat the last valid angle
             adjusted_course.append(current_course)
             continue
-
         if not initialized:
             # Initialize with the first non-`-1` angle
             initialized = True
             current_course = course
             adjusted_course.append(current_course)
             continue
-
         # Calculate the difference considering wrap around
         delta = course - (current_course % 360)
         if delta > 180:
             delta -= 360
         elif delta < -180:
             delta += 360
-
         current_course += delta
         adjusted_course.append(current_course)
-
     data['Course'] = adjusted_course
 
     if write_data_log:
