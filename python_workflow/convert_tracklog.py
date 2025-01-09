@@ -131,8 +131,7 @@ def convert_tracklog(input_csv_filename=None, write_data_log=False):
 
     if write_data_log:
         # Write data dict to output csv file
-        output_csv_filename = input_csv_filename.removesuffix('.csv') + '_output.csv'
-            
+        output_csv_filename = input_csv_filename.removesuffix('.csv') + '_output.csv'    
         with open(output_csv_filename, 'w', newline='') as output_f:
             fieldnames = data.keys()
             writer = csv.DictWriter(output_f, fieldnames = fieldnames)
@@ -148,7 +147,7 @@ def convert_tracklog(input_csv_filename=None, write_data_log=False):
         
         print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Output file {output_csv_filename} contains {len(data["Timestamp"])} records') 
     
-    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Finished in {time.time()-benchmark_time_start:#.1f} seconds')    
+    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Finished in {time.time()-benchmark_time_start:#.1f} seconds')
     
     return data
 
