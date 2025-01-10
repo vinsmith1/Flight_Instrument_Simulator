@@ -72,5 +72,5 @@ def calculate_frames(data, framerate):
         speed_last = speed
         bank_last = bank
         pitch_last = pitch
-    
-    return {'Frame':frames_frame, 'Altitude':frames_altitude, 'Course':frames_course, 'Speed':frames_speed, 'Bank':frames_bank, 'Pitch':frames_pitch, 'Valid':frames_valid}
+
+    return {'Timestamp':data['Timestamp'], 'Frame':frames_frame, 'Altitude':frames_altitude, 'Course':frames_course, 'Speed':frames_speed, 'Bank':frames_bank, 'Pitch':frames_pitch, 'Valid':frames_valid}

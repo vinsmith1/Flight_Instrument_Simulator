@@ -16,9 +16,7 @@ from Altimeter import Altimeter
 from AttitudeIndicator import AttitudeIndicator
 
 class InstrumentPanel:
-
     # load source images
-
     def __init__(self):
         self.HI = HeadingIndicator()
         self.GSI = GroundSpeedIndicator()
@@ -27,10 +25,10 @@ class InstrumentPanel:
         width = self.HI.width() + self.GSI.width() + self.ALT.width() + self.AI.width()
         self.imgTemp = Image.new('RGBA', ( width, max(self.HI.height(), self.GSI.height(), self.ALT.height(), self.AI.height()) ), 'CYAN')
 
-    def buildImage(self, heading=0, speed=0, altitude=0, bank=0, pitch=0):
-        tmpGSI = self.GSI.buildImage(speed)
-        tmpHI = self.HI.buildImage(heading)
+    def buildImage(self, altitude=0, course=0, speed=0, bank=0, pitch=0):
         tmpALT = self.ALT.buildImage(altitude)
+        tmpHI = self.HI.buildImage(course)
+        tmpGSI = self.GSI.buildImage(speed)
         tmpAI = self.AI.buildImage(bank, pitch)
                
         imgTemp = self.imgTemp.copy()

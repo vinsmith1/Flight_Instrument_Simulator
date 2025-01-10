@@ -17,13 +17,12 @@
 import time
 import csv
 
-def convert_tracklog(input_csv_filename=None, write_data_log=False):
-    """Convert a ForeFlight tracklog in csv format to an output format for use in animating graphical flight instruments in Blender
+def convert_tracklog(input_csv_filename=None):
+    """Convert a ForeFlight tracklog in csv format to an output format for use in animating graphical flight instruments in python
 
     Args:
         inputCsvFilename (str, optional): Filename of csv file to be processed. Defaults to None.
-        write_data_log (bool, optional): Write output log file?. Defaults to False.
-    
+
     Returns:
         dict: Data necessary for further processing
     """
@@ -64,7 +63,7 @@ def convert_tracklog(input_csv_filename=None, write_data_log=False):
     for colidx,col in enumerate(header):
         data[col] = [row[colidx] for row in float_list]
 
-    # Headers
+    # Headers from ForeFlight log
     # 00 = Timestamp
     # 01 = Latitude
     # 02 = Longitude
@@ -127,28 +126,8 @@ def convert_tracklog(input_csv_filename=None, write_data_log=False):
             delta += 360
         current_course += delta
         adjusted_course.append(current_course)
-    data['Course'] = adjusted_course
-
-    if write_data_log:
-        # Write data dict to output csv file
-        output_csv_filename = input_csv_filename.removesuffix('.csv') + '_output.csv'    
-        with open(output_csv_filename, 'w', newline='') as output_f:
-            fieldnames = data.keys()
-            writer = csv.DictWriter(output_f, fieldnames = fieldnames)
-            writer.writeheader()
-            
-            # For reference, data dict format is {key0:[key0data0,key0data1...],key1:[key1data0,key1data1...]}
-            # to write the rows of the output csv file, need to grab the i'th value of each key for each row
-            for i,row in enumerate(data['Timestamp']):
-                tempDict = {}
-                for col in data.keys():    
-                    tempDict[col] = data[col][i]
-                writer.writerow(tempDict)
-        
-        print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Output file {output_csv_filename} contains {len(data["Timestamp"])} records') 
-    
+    data['Course'] = adjusted_course   
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Finished in {time.time()-benchmark_time_start:#.1f} seconds')
-    
     return data
 
 if __name__ == "__main__":
