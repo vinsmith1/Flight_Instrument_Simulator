@@ -1,14 +1,3 @@
-# Create video of heading indicator moving throughout
-# needle position based on data extracted from ForeFlight track log
-# 
-# Several layers are merged together:
-# - bottom: background of the heading indicator
-# - card:   layer with cardinal directions and degrees that rotates according to heading
-# - top:    45degree pointers and airplane outline
-#
-# ForeFlight track log format
-# first three rows are headers
-# fourth and remaining rows contain data
 from PIL import Image
 from HeadingIndicator import HeadingIndicator
 from GroundSpeedIndicator import GroundSpeedIndicator
@@ -16,31 +5,53 @@ from Altimeter import Altimeter
 from AttitudeIndicator import AttitudeIndicator
 
 class InstrumentPanel:
+    """Class to build an instrument panel image by concatenating images from individual instrument classes
+
+    Returns:
+        _type_: _description_
+    """
     # load source images
     def __init__(self):
-        self.HI = HeadingIndicator()
-        self.GSI = GroundSpeedIndicator()
-        self.ALT = Altimeter()
-        self.AI = AttitudeIndicator()
-        width = self.HI.width() + self.GSI.width() + self.ALT.width() + self.AI.width()
-        self.imgTemp = Image.new('RGBA', ( width, max(self.HI.height(), self.GSI.height(), self.ALT.height(), self.AI.height()) ), 'CYAN')
+        self.hi = HeadingIndicator()
+        self.gsi = GroundSpeedIndicator()
+        self.alt = Altimeter()
+        self.ai = AttitudeIndicator()
+        width = self.hi.width() + self.gsi.width() + self.alt.width() + self.ai.width()
+        self.image = Image.new('RGBA', ( width, max(self.hi.height(), self.gsi.height(), self.alt.height(), self.ai.height()) ), 'CYAN')
 
-    def buildImage(self, altitude=0, course=0, speed=0, bank=0, pitch=0):
-        tmpALT = self.ALT.buildImage(altitude)
-        tmpHI = self.HI.buildImage(course)
-        tmpGSI = self.GSI.buildImage(speed)
-        tmpAI = self.AI.buildImage(bank, pitch)
-               
-        imgTemp = self.imgTemp.copy()
+    def build_image(self, altitude=0, course=0, speed=0, bank=0, pitch=0):
+        """Return an image of the instrument panel according to the input parameters
+
+        Args:
+            altitude (int, optional): _description_. Defaults to 0.
+            course (int, optional): _description_. Defaults to 0.
+            speed (int, optional): _description_. Defaults to 0.
+            bank (int, optional): _description_. Defaults to 0.
+            pitch (int, optional): _description_. Defaults to 0.
+
+        Returns:
+            _type_: _description_
+        """
+        alt = self.alt.build_image(altitude)
+        hi = self.hi.build_image(course)
+        gsi = self.gsi.build_image(speed)
+        ai = self.ai.build_image(bank, pitch)
+
+        img = self.image.copy()
         col = 0
-        imgTemp.paste(tmpGSI, (col,0), tmpGSI)
-        col += tmpGSI.width
-        imgTemp.paste(tmpHI, (col,0), tmpHI)
-        col += tmpHI.width
-        imgTemp.paste(tmpALT, (col, 0), tmpALT)
-        col += tmpALT.width
-        imgTemp.paste(tmpAI, (col, 0), tmpAI)
-        return imgTemp
-    
+        img.paste(gsi, (col,0), gsi)
+        col += gsi.width
+        img.paste(hi, (col,0), hi)
+        col += hi.width
+        img.paste(alt, (col, 0), alt)
+        col += alt.width
+        img.paste(ai, (col, 0), ai)
+        return img
+
     def size(self):
-        return self.imgTemp.size
+        """Return the size of the instrument panel image
+
+        Returns:
+            _type_: tuple describing the size of the image
+        """
+        return self.image.size

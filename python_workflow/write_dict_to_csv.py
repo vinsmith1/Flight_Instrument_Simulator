@@ -13,7 +13,7 @@ def write_dict_to_csv(dictionary, output_csv_filename):
         # For reference, data dict format is {key0:[key0data0,key0data1...],key1:[key1data0,key1data1...]}
         # to write the rows of the output csv file, need to grab the i'th value of each key for each row
         for i,row in enumerate(dictionary['Timestamp']):
-            tempDict = {}
+            temp_dict = {}
             for col in dictionary.keys():    
-                tempDict[col] = dictionary[col][i]
-            writer.writerow(tempDict)
+                temp_dict[col] = dictionary[col][i]
+            writer.writerow(temp_dict)

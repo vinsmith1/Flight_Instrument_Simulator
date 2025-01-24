@@ -1,18 +1,3 @@
-from build_instrument_panel import build_instrument_panel
+from animate_instrument_panel import animate_instrument_panel
 
-filename = 'tracklog.csv'
-
-# write only the csv output file?
-# True = only write the csv output file without overwriting the mp4 file
-# False = write video mp4 file and csv file
-logOnly = True
-
-build_instrument_panel(filename, logOnly)
-
-# place AI on frame:
-# scale 0.239, 0.239
-# x, y  -100,  -405
-
-# GSI_HI_ASI:
-# scale 0.400, 0.400
-# x, y  -569,  -687
+animate_instrument_panel("tracklog_test.csv")
