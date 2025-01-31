@@ -1,4 +1,7 @@
-# This is a copy of "main.py" within the InstrumentPanelAnimate.blend. It is not intended to be run as a standalone script.
+# This is a copy of "main.py" within the InstrumentPanelAnimate.blend file. It is not intended to be run as a standalone script, but from within the Blender file.
+
+
+# give Python access to Blender's functionality
 import sys
 import bpy
 import os
@@ -7,7 +10,7 @@ import csv
 import time
 
 blend_filename = bpy.path.basename(bpy.context.blend_data.filepath)
-tracklog = 'tracklog.csv'
+tracklog = 'tracklog_test.csv'
 framerate = 30
 
 # ********* HELPER FUNCTIONS *************
@@ -128,53 +131,27 @@ def convert_tracklog(input_csv_filename=None):
     adjusted_course = []
     initialized = False
     current_course = 0
-
     for course, valid in zip(data['Course'], data['Valid']):
         if not valid:
             # Before initialization, replace -1 with 0; after, repeat the last valid angle
             adjusted_course.append(current_course)
             continue
-
         if not initialized:
             # Initialize with the first non-`-1` angle
             initialized = True
             current_course = course
             adjusted_course.append(current_course)
             continue
-
         # Calculate the difference considering wrap around
         delta = course - (current_course % 360)
         if delta > 180:
             delta -= 360
         elif delta < -180:
             delta += 360
-
         current_course += delta
         adjusted_course.append(current_course)
-
     data['Course'] = adjusted_course
-    
-    write_data_log = True
-    if write_data_log:
-        # Write data dict to output csv file
-        output_csv_filename = input_csv_filename.removesuffix('.csv') + '_blenderoutput.csv'
-            
-        with open(output_csv_filename, 'w', newline='') as output_f:
-            fieldnames = data.keys()
-            writer = csv.DictWriter(output_f, fieldnames = fieldnames)
-            writer.writeheader()
-            
-            # For reference, data dict format is {key0:[key0data0,key0data1...],key1:[key1data0,key1data1...]}
-            # to write the rows of the output csv file, need to grab the i'th value of each key for each row
-            for i,row in enumerate(data['Timestamp']):
-                tempDict = {}
-                for col in data.keys():    
-                    tempDict[col] = data[col][i]
-                writer.writerow(tempDict)
-
     return data
-
-
 
 
 # ************* MAIN FUNCTION ***************
@@ -194,6 +171,24 @@ keyframes = []
 for t in data['Timestamp']:
     keyframes.append(round(t * framerate))
 data['Keyframe'] = keyframes
+
+write_data_log = True
+if write_data_log:
+    # Write data dict to output csv file
+    output_csv_filename = csv_file.removesuffix('.csv') + '_blenderoutput.csv'
+        
+    with open(output_csv_filename, 'w', newline='') as output_f:
+        fieldnames = data.keys()
+        writer = csv.DictWriter(output_f, fieldnames = fieldnames)
+        writer.writeheader()
+        
+        # For reference, data dict format is {key0:[key0data0,key0data1...],key1:[key1data0,key1data1...]}
+        # to write the rows of the output csv file, need to grab the i'th value of each key for each row
+        for i,row in enumerate(data['Timestamp']):
+            tempDict = {}
+            for col in data.keys():    
+                tempDict[col] = data[col][i]
+            writer.writerow(tempDict)
 
 # convert the 'Keyframe' and 'Valid' data back to int
 #col_to_int = ('Keyframe', 'Valid')
@@ -268,7 +263,7 @@ if col:
 # Animate AI
 # Pitch and bank data only seems to change very 8-12 seconds in the captured data.
 # If a keyframe is added for every data point the AI moves only when the data changes, which happens basically every 8-12 seconds.
-# The animation algorithm for the AI should only add a keyframe if the pitch or bank has changed
+# The animation algorithm for the AI should only add a keyframe when the pitch or bank has changed
 pitch_last = data['Pitch'][0]
 bank_last = data['Bank'][0]
 print(f'[{blend_filename}] {time.strftime("%Y-%m-%d %H:%M:%S")} Set keyframes for AI')
@@ -312,7 +307,7 @@ if col:
         # X is Pitch * sin(bank)
         pitch_x = pitch_scaled * math.sin(bank_rad) + AI_X
         # Y is Pitch * cos(bank)
-        pitch_y = pitch_scaled * math.cos(bank_rad) + AI_Y
+        pitch_y = -pitch_scaled * math.cos(bank_rad) + AI_Y
         for obj in col.objects:
             obj.select_set(True)
             # Rotation is the same as bank
