@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 
-class HeadingIndicator(object):
+class HeadingIndicator():
     """Class for HeadingIndicator image"""
     def __init__(self):
         # Check if the background, compass card, and overlay images exist
@@ -17,7 +17,7 @@ class HeadingIndicator(object):
         self.top = Image.open('.\input_images\HI_overlay.png').convert('RGBA')
 
     def build_image(self, heading):
-        img = Image.new('RGBA', self.background.size, 'CYAN')
+        img = Image.new('RGBA', self.background.size)
         img.paste(self.background, (0,0), self.background)
         img_card_rotated = self.compasscard.rotate(heading)
         img.paste(img_card_rotated, (0,0), img_card_rotated)

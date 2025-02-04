@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-
 <svg
    width="3.93701in"
    height="3.93701in"
@@ -11,6 +10,9 @@
    id="svg8"
    sodipodi:docname="Attitude Indicator.svg"
    inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   inkscape:export-filename="..\python_workflow\input_images\AI_pitch.png"
+   inkscape:export-xdpi="190.46252"
+   inkscape:export-ydpi="190.46252"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -38,14 +40,14 @@
    inkscape:deskcolor="#d1d1d1"
    inkscape:document-units="in"
    inkscape:zoom="2"
-   inkscape:cx="-9"
-   inkscape:cy="366.25"
+   inkscape:cx="75.75"
+   inkscape:cy="393.25"
    inkscape:window-width="2560"
    inkscape:window-height="1369"
    inkscape:window-x="-8"
    inkscape:window-y="-8"
    inkscape:window-maximized="1"
-   inkscape:current-layer="layer3" />
+   inkscape:current-layer="layer5" />
 	<style
    type="text/css"
    id="style1">
@@ -76,6 +78,25 @@
      style="fill:#00b0f0;fill-opacity:1;stroke:none;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
      transform="translate(-127.559)" /></g><g
    inkscape:groupmode="layer"
+   id="layer5"
+   inkscape:label="pitch card (alternate)"
+   transform="matrix(0.94136368,0,0,1,0.15255681,0.06629132)"
+   style="display:none"><rect
+     x="-120.62825"
+     y="284.81277"
+     width="240.94458"
+     height="140.31476"
+     class="st1"
+     id="rect2"
+     style="fill:#7f6000;stroke:none;stroke-width:0.749999;stroke-linecap:round;stroke-linejoin:round" /><rect
+     x="-120.62826"
+     y="141.66304"
+     width="240.94458"
+     height="140.31476"
+     class="st2"
+     id="rect3"
+     style="fill:#00b0f0;stroke:none;stroke-width:0.749999;stroke-linecap:round;stroke-linejoin:round" /></g><g
+   inkscape:groupmode="layer"
    id="layer3"
    inkscape:label="pitch card"
    style="display:inline"
@@ -84,8 +105,8 @@
      class="st1"
      id="path2-9"
      style="fill:#7f6000;fill-opacity:1;stroke:none;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round"
-     transform="translate(-113.37,82.204699)"
-     inkscape:label="ground" /><path
+     inkscape:label="ground"
+     transform="translate(-113.37,82.204699)" /><path
      d="M 0,283.46 H 226.74 A 113.386,82.1567 -180 0 0 0,283.46 Z"
      class="st2"
      id="path3-4"
@@ -211,11 +232,12 @@
      transform="rotate(180,13.46455,305.43299)" /></g><g
    inkscape:groupmode="layer"
    id="layer4"
-   inkscape:label="bank"><path
+   inkscape:label="bank"
+   style="display:inline"><path
      id="path2-2"
      style="fill:#222222;fill-opacity:1;stroke:none;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round"
      class="st1"
-     d="M 128.97454 154.99234 A 128.976 128.976 0 0 0 -0.00068566447 283.46072 L 34.720539 283.46072 A 94.255 94.255 0 0 1 223.23 283.46072 L 257.94976 283.46072 A 128.976 128.976 0 0 0 128.97454 154.99234 z M -0.00068566447 283.46658 A 128.976 128.976 0 1 0 257.94976 283.46658 L 223.23 283.46658 A 94.255 94.255 0 0 1 34.720539 283.46658 L -0.00068566447 283.46658 z "
+     d="M 128.97454,154.99234 A 128.976,128.976 0 0 0 -6.8566447e-4,283.46072 H 34.720539 a 94.255,94.255 0 0 1 188.509461,0 h 34.71976 A 128.976,128.976 0 0 0 128.97454,154.99234 Z M -6.8566447e-4,283.46658 a 128.976,128.976 0 1 0 257.95044566447,0 H 223.23 a 94.255,94.255 0 0 1 -188.509461,0 z"
      transform="translate(-128.976)" /><rect
      x="0"
      y="257.953"
@@ -308,7 +330,8 @@
    inkscape:groupmode="layer"
    id="layer1"
    inkscape:label="overlay"
-   inkscape:highlight-color="#0000ff"><path
+   inkscape:highlight-color="#0000ff"
+   style="display:inline"><path
      d="M 31.04,283.46 V 271.98 A 28.3465,28.3465 -180 0 0 56.41,246.61 H 52.3 a 2.83465,2.83465 0 0 1 -1.54,-0.45 22.6772,22.6772 0 0 1 -19.74,20.12 l -2.46,-19.69 a 2.83465,2.83465 0 0 1 -0.71,0 l -2.46,19.69 A 22.6772,22.6772 0 0 1 5.65,246.16 2.83464,2.83464 0 0 1 4.11,246.61 H 0 a 28.3465,28.3465 -180 0 0 25.37,25.37 v 11.48 z"
      class="st4"
      id="path8"
