@@ -1,8 +1,7 @@
 import os
 from PIL import Image
 
-
-class GroundSpeedIndicator(object):
+class GroundSpeedIndicator():
     """Class for ground speed indicator instrument
     """
     
@@ -34,7 +33,7 @@ class GroundSpeedIndicator(object):
         Returns:
             Image: a PIL Image of the ground speed indicator indicating the desired speed
         """
-        img = Image.new('RGBA', self.background.size, 'CYAN')
+        img = Image.new('RGBA', self.background.size)
         img.paste(self.background, (0,0), self.background)
         img_pointer_rotated = self.pointer.rotate(self.speed_to_angle(speed))
         img.paste(img_pointer_rotated, (0,0), img_pointer_rotated)

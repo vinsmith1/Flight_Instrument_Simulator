@@ -4,12 +4,11 @@ import GroundSpeedIndicator
 OUTPUT_PATH='.\\output\\GSI_test'
 
 if not os.path.exists(OUTPUT_PATH):
-        # if the directory is not present then create it.
-        os.makedirs(OUTPUT_PATH)
+    os.makedirs(OUTPUT_PATH)
 
 GSI = GroundSpeedIndicator.GroundSpeedIndicator()
 
-# Create image/video sequence
+# Create image sequence
 for frame,speed in enumerate(range(0, 206, 1)):
     tmpGSI = GSI.build_image(speed)
     # Save image

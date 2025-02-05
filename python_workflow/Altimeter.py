@@ -1,9 +1,9 @@
 import os
 from PIL import Image
 
-class Altimeter(object):
+class Altimeter():
     """Class for Altimeter instrument"""    
-    def __init__(self, min_speed=25, min_speed_pointer_angle=0, max_speed=200, max_speed_pointer_angle=39, clockwise_positive=True):
+    def __init__(self, min_speed=25, min_speed_pointer_angle=0, max_speed=200, max_speed_pointer_angle=39):
         # y1: angle at low speed
         # y2: angle at high speed
         # x1: low speed
@@ -13,7 +13,6 @@ class Altimeter(object):
         self.y1 = min_speed_pointer_angle
         self.x2 = max_speed
         self.y2 = max_speed_pointer_angle
-        self.cw_positive = clockwise_positive # currently not used
 
         # Check if background, hundreds, thousands, and ten thousands pointer images exist
         if not os.path.exists('.\input_images\ALT_background.png'):
@@ -32,7 +31,7 @@ class Altimeter(object):
 
     def build_image(self, altitude):
         '''
-        Returns an image of the altimter showing the indicated speed
+        Returns an image of the altimeter showing the indicated speed
         
             Parameters:
                 speed (float): a value that indicates aircraft ground speed
@@ -40,7 +39,7 @@ class Altimeter(object):
             Returns
                 imgTemp (Image): a PIL Image of the altimeter
         '''
-        img = Image.new('RGBA', self.background.size, 'CYAN')
+        img = Image.new('RGBA', self.background.size)
         img.paste(self.background, (0,0), self.background)
 
         img_ten_thousands_pointer_rotated = self.ten_thousands_pointer.rotate(-altitude*0.0036)
