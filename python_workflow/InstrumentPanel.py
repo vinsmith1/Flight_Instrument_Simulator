@@ -17,7 +17,7 @@ class InstrumentPanel:
         self.alt = Altimeter()
         self.ai = AttitudeIndicator()
         width = self.hi.width() + self.gsi.width() + self.alt.width() + self.ai.width()
-        self.image = Image.new('RGBA', ( width, max(self.hi.height(), self.gsi.height(), self.alt.height(), self.ai.height()) ), 'CYAN')
+        self.image = Image.new('RGBA', ( width, max(self.hi.height(), self.gsi.height(), self.alt.height(), self.ai.height()) ))
 
     def build_image(self, altitude=0, course=0, speed=0, bank=0, pitch=0):
         """Return an image of the instrument panel according to the input parameters
