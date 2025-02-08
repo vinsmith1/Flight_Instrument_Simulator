@@ -2,12 +2,12 @@ from multiprocessing import Pool
 import InstrumentPanel
 instrument_panel_image = InstrumentPanel.InstrumentPanel()
 
-def render_output(frames, path):
+def render_output(frames:dict, output_folder:str):
     """Render frame info to output image sequence
 
     Args:
-        frames (_type_): _description_
-        path (_type_): _description_
+        frames (dict): frame dict from calculate_frames
+        output_folder (str): output folder for rendered images
     """
     p = Pool()
     for frame, altitude, course, speed, bank, pitch in zip(frames['Frame'], frames['Altitude'], frames['Course'], frames['Speed'], frames['Bank'], frames['Pitch']):
@@ -17,7 +17,4 @@ def render_output(frames, path):
 
 def render_frame(altitude, course, speed, bank, pitch, frame, path):
     tmp_image = instrument_panel_image.build_image(altitude, course, speed, bank, pitch)
-    tmp_image.save(f'{path}\\InstrumentPanel_{frame:04d}.png', compress_level=1)
-
-if __name__ == '__main__':
-    render_output()
+    tmp_image.save(f'{output_folder}\\InstrumentPanel_{frame:04d}.png', compress_level=1)
