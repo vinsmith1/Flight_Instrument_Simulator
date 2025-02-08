@@ -14,29 +14,23 @@
 # first three rows are headers
 # fourth and remaining rows contain data
 
-import time
 import csv
 
-def convert_tracklog(input_csv_filename=None):
+def convert_tracklog(tracklog_filepath:str):
     """Convert a ForeFlight tracklog in csv format to an output format for use in animating graphical flight instruments in python
 
     Args:
-        inputCsvFilename (str, optional): Filename of csv file to be processed. Defaults to None.
+        tracklog_filepath (str): Filename of csv file to be processed.
 
     Returns:
         dict: Data necessary for further processing
     """
-    module_name = 'convert_tracklog'
-    # Track time for benchmarking purpose
-    benchmark_time_start = time.time()
-    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Start processing {input_csv_filename}')
-
     # Validate input argument....just check that the file is a .csv
-    if not input_csv_filename or not str(input_csv_filename).endswith('.csv'):
+    if not tracklog_filepath or not str(tracklog_filepath).endswith('.csv'):
         print('[{module_name}] Error: invalid file')
         return None
   
-    f = open(input_csv_filename, newline='')
+    f = open(tracklog_filepath, newline='')
     raw_input_data = list(csv.reader(f, delimiter=','))
     
     # Omit the first two rows from the ForeFlight log as these contain other information
@@ -127,8 +121,7 @@ def convert_tracklog(input_csv_filename=None):
         current_course += delta
         adjusted_course.append(current_course)
     data['Course'] = adjusted_course   
-    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Finished in {time.time()-benchmark_time_start:#.1f} seconds')
     return data
 
 if __name__ == "__main__":
-    convert_tracklog('tracklog.csv', True)
+    convert_tracklog('tracklog.csv')

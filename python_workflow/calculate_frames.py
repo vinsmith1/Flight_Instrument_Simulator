@@ -1,4 +1,13 @@
-def calculate_frames(data, framerate):
+def calculate_frames(data:dict, framerate:int):
+    """Calculate the frames for the animation
+
+    Args:
+        data (dict): keyframe data in dict format as returned by convert_tracklog
+        framerate (int): frame rate of desired animation
+
+    Returns:
+        dict:  keyframe data in dict format with interpolated frames
+    """
     # Calculate which animation frames are keyframes   
     keyframes = []
     for t in data['Timestamp']:
