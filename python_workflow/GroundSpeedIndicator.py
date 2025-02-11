@@ -1,11 +1,13 @@
-import os
+import sys
 from PIL import Image
 
 class GroundSpeedIndicator():
     """Class for ground speed indicator instrument
     """
-    
+
     def __init__(self, min_speed=25, min_speed_pointer_angle=0, max_speed=200, max_speed_pointer_angle=39):
+        '''Initialize the ground speed indicator image'''
+
         # y1: angle at low speed
         # y2: angle at high speed
         # x1: low speed
@@ -17,12 +19,12 @@ class GroundSpeedIndicator():
         self.y2 = max_speed_pointer_angle
 
         # Check if the background and pointer images exist
-        if not os.path.exists('.\input_images\GSI_background.png'):
-            raise FileNotFoundError('Background image not found')
-        if not os.path.exists('.\input_images\GSI_pointer.png'):
-            raise FileNotFoundError('Pointer image not found')
-        self.background = Image.open('.\input_images\GSI_background.png').convert('RGBA')
-        self.pointer = Image.open('.\input_images\GSI_pointer.png').convert('RGBA')
+        try:
+            self.background = Image.open('.\\input_images\\GSI_background.png').convert('RGBA')
+            self.pointer = Image.open('.\\input_images\\GSI_pointer.png').convert('RGBA')
+        except FileNotFoundError as e:
+            print(f'Can\'t open file: {e}')
+            sys.exit(1)
 
     def build_image(self, speed):
         """Returns an image of the ground speed indicator showing the indicated speed

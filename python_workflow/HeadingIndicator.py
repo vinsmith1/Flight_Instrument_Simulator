@@ -1,22 +1,21 @@
-import os
+import sys
 from PIL import Image
 
 class HeadingIndicator():
     """Class for HeadingIndicator image"""
     def __init__(self):
+        '''Initialize the heading indicator image'''
         # Check if the background, compass card, and overlay images exist
-        if not os.path.exists('.\input_images\HI_background.png'):
-            raise FileNotFoundError('Background image not found')
-        if not os.path.exists('.\input_images\HI_compass_card.png'):
-            raise FileNotFoundError('Compass card image not found')
-        if not os.path.exists('.\input_images\HI_overlay.png'):
-            raise FileNotFoundError('Overlay image not found')
-
-        self.background = Image.open('.\input_images\HI_background.png').convert('RGBA')
-        self.compasscard = Image.open('.\input_images\HI_compass_card.png').convert('RGBA')
-        self.top = Image.open('.\input_images\HI_overlay.png').convert('RGBA')
+        try:
+            self.background = Image.open('.\\input_images\\HI_background.png').convert('RGBA')
+            self.compasscard = Image.open('.\\input_images\\HI_compass_card.png').convert('RGBA')
+            self.top = Image.open('.\\input_images\\HI_overlay.png').convert('RGBA')
+        except FileNotFoundError as e:
+            print(f'Can\'t open file: {e}')
+            sys.exit(1)      
 
     def build_image(self, heading):
+        '''Build a heading indicator image'''
         img = Image.new('RGBA', self.background.size)
         img.paste(self.background, (0,0), self.background)
         img_card_rotated = self.compasscard.rotate(heading)

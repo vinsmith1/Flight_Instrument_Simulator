@@ -1,23 +1,19 @@
-import os
+import sys
 from PIL import Image
 
 class AttitudeIndicator():
     """Class for AdditudeIndicator image"""
     def __init__(self):
-        # Check if the background, pitch, bank, and overlay images exist
-        if not os.path.exists('.\input_images\AI_background.png'):
-            raise FileNotFoundError('Background image not found')
-        if not os.path.exists('.\input_images\AI_pitch.png'):
-            raise FileNotFoundError('Pitch image not found')
-        if not os.path.exists('.\input_images\AI_bank.png'):
-            raise FileNotFoundError('Bank image not found')
-        if not os.path.exists('.\input_images\AI_overlay.png'):
-            raise FileNotFoundError('Overlay image not found')
+        """Initialize the attitude indicator image"""
+        try:
+            self.background = Image.open('.\\input_images\\AI_background.png').convert('RGBA')
+            self.pitch = Image.open('.\\input_images\\AI_pitch.png').convert('RGBA')
+            self.bank = Image.open('.\\input_images\\AI_bank.png').convert('RGBA')
+            self.overlay = Image.open('.\\input_images\\AI_overlay.png').convert('RGBA')
+        except FileNotFoundError as e:
+            print(f'Can\'t open file: {e}')
+            sys.exit(1)
 
-        self.background = Image.open('.\input_images\AI_background.png').convert('RGBA')
-        self.pitch = Image.open('.\input_images\AI_pitch.png').convert('RGBA')
-        self.bank = Image.open('.\input_images\AI_bank.png').convert('RGBA')
-        self.overlay = Image.open('.\input_images\AI_overlay.png').convert('RGBA')
         # slide pitch card up or down according to pitch value
         # scaling factor derived empirically
         self.pitch_scaling_factor = 120/20

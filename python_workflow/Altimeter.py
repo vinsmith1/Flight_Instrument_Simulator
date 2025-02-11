@@ -1,33 +1,20 @@
-import os
+import sys
 from PIL import Image
 
 class Altimeter():
     """Class for Altimeter instrument"""    
-    def __init__(self, min_speed=25, min_speed_pointer_angle=0, max_speed=200, max_speed_pointer_angle=39):
-        # y1: angle at low speed
-        # y2: angle at high speed
-        # x1: low speed
-        # x2: high speed
-        # CW_positive tells if the pointer should move clockwise with increasing speed
-        self.x1 = min_speed
-        self.y1 = min_speed_pointer_angle
-        self.x2 = max_speed
-        self.y2 = max_speed_pointer_angle
+    def __init__(self):
+        '''Initialize the altimeter image'''
 
-        # Check if background, hundreds, thousands, and ten thousands pointer images exist
-        if not os.path.exists('.\input_images\ALT_background.png'):
-            raise FileNotFoundError('Background image not found')
-        if not os.path.exists('.\input_images\ALT_hundreds_indicator.png'):
-            raise FileNotFoundError('Hundreds indicator image not found')
-        if not os.path.exists('.\input_images\ALT_thousands_indicator.png'):
-            raise FileNotFoundError('Thousands indicator image not found')
-        if not os.path.exists('.\input_images\ALT_ten_thousands_indicator.png'):
-            raise FileNotFoundError('Ten thousands indicator image not found')
-
-        self.background = Image.open('.\input_images\ALT_background.png').convert('RGBA')
-        self.hundreds_pointer = Image.open('.\input_images\ALT_hundreds_indicator.png').convert('RGBA')
-        self.thousands_pointer = Image.open('.\input_images\ALT_thousands_indicator.png').convert('RGBA')
-        self.ten_thousands_pointer = Image.open('.\input_images\ALT_ten_thousands_indicator.png').convert('RGBA')
+        # Open background, hundreds, thousands, and ten thousands pointer images
+        try:
+            self.background = Image.open('.\\input_images\\ALT_background.png').convert('RGBA')
+            self.hundreds_pointer = Image.open('.\\input_images\\ALT_hundreds_indicator.png').convert('RGBA')
+            self.thousands_pointer = Image.open('.\\input_images\\ALT_thousands_indicator.png').convert('RGBA')
+            self.ten_thousands_pointer = Image.open('.\\input_images\\ALT_ten_thousands_indicator.png').convert('RGBA')
+        except FileNotFoundError as e:
+            print(f'Can\'t open file: {e}')
+            sys.exit(1)
 
     def build_image(self, altitude):
         '''
