@@ -1,10 +1,10 @@
 # Flight Instrument Simulator
 
-A set of tools that can create motion graphics of some flight instruments using actual flight data logged by ForeFlight, a popular "electronic flight bag" (EFD) used by many pilots.
+A set of tools that can create motion graphics of some of the primary flight instruments using actual flight data logged by ForeFlight, a popular "electronic flight bag" (EFD) used by many pilots.
 
 ## Introduction
 
-This script creates an image sequence allows the user to create animations of the primary “steam gauge” instruments commonly used in older General Aviation aircraft using actual flight data. The script produces animations of the flight instruments according to the flight data. Flight track data can be exported in csv format from Foreflight's web interface as described later in this document.
+This script creates an image sequence of four of the primary “steam gauge” instruments commonly used in older General Aviation aircraft using actual flight data based on actual flight data recorded by Foreflight.  Flight track data can be exported in csv format from Foreflight's web interface as described later in this document.
 
 ![image](./documentation/flight_deck_instruments.png)
 
@@ -21,21 +21,23 @@ This project contains two separate methods of creating the flight instrument gra
 
 ## Python Workflow
 
-The first method generates an output image sequence of an instrument panel from the tracklog data. All processing is done within python. Image quality is decent (see NOTE) and the rendering process takes advantage of multiprocessing  so that processing and generating the image sequence for a 1.5 hour flight tracklog should take less than 5 or maybe 10 minutes on modern hardware.
+The first method generates an image sequence of the instruments from the tracklog data all from within Python. The script takes advantage of Python multiprocessing leading to fast render times. A processing speed of nearly 200 frames per second or more can be achieved with modern hardware. 
 
 >**NOTE** *One disadvantage of this method is raster images as the input, resulting in lower quality output than if vector images were used. This limitation is due to the pillow library used to transform the images and save the image sequence. A library that supports vector graphics transformation may produce higher quality output.*
 
 ### Python Setup
 
 1. Install python (the script was developed on various python installations from 3.9 through 3.13)
-2. Set up a python virtual environment.
+2. Set up a python virtual environment in the `python_workflow` folder.
 3. Install `numpy` and `pillow` (or `pip install -r requirements.txt` using `requirements.txt` in the `python_workflow` folder)
+
+Code development was primarily done in Visual Studio Code. If using Visual Studio Code, you'll want to open the`python_workflow` for debugging.
 
 ### Running the Script
 
 The script starts from `animate_instrument_panel`. Run the `animate_instrument_panel.py` file directly or call the method from your own program.
 
-Track log data should be located in the same folder as this python file and be named `tracklog.csv`. An example tracklog is included as a reference for the expected data format.
+Track log data should be located in the same folder as this python file and be named `tracklog.csv`. You can change the filename in the script to match the filename of whatever csv file you are trying to process. An example tracklog is included as a reference for the expected data format.
 
 This is an example of the output:
 ![image](./documentation/sample_python_animation.gif)
