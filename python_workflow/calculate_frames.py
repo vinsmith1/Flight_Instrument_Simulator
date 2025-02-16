@@ -65,7 +65,7 @@ def calculate_frames(data:dict, framerate:int):
         if keyframe_change == 0:
             continue
         bank_change = bank - bank_last
-        pitch_change = pitch - pitch_last     
+        pitch_change = pitch - pitch_last
         # calculate between keyframes
         bank_change_interframe = bank_change / keyframe_change
         pitch_change_interframe = pitch_change / keyframe_change
@@ -76,10 +76,7 @@ def calculate_frames(data:dict, framerate:int):
             frames_pitch.append(pitch_last + pitch_change_interframe * frame)
             frames_valid.append(valid)
         keyframe_last = keyframe
-        altitude_last = altitude
-        heading_last = heading
-        speed_last = speed
         bank_last = bank
         pitch_last = pitch
 
-    return {'Timestamp':data['Timestamp'], 'Frame':frames_frame, 'Altitude':frames_altitude, 'Course':frames_course, 'Speed':frames_speed, 'Bank':frames_bank, 'Pitch':frames_pitch, 'Valid':frames_valid}
+    return {'Frame':frames_frame, 'Altitude':frames_altitude, 'Course':frames_course, 'Speed':frames_speed, 'Bank':frames_bank, 'Pitch':frames_pitch, 'Valid':frames_valid}

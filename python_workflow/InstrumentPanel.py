@@ -19,7 +19,7 @@ class InstrumentPanel:
         width = self.hi.width() + self.gsi.width() + self.alt.width() + self.ai.width()
         self.image = Image.new('RGBA', ( width, max(self.hi.height(), self.gsi.height(), self.alt.height(), self.ai.height()) ))
 
-    def build_image(self, altitude=0, course=0, speed=0, bank=0, pitch=0):
+    def build_image(self, altitude=0, course=0, speed=0, bank=0, pitch=0, valid=False):
         """Return an image of the instrument panel according to the input parameters
 
         Args:
@@ -33,8 +33,8 @@ class InstrumentPanel:
             _type_: _description_
         """
         alt = self.alt.build_image(altitude)
-        hi = self.hi.build_image(course)
-        gsi = self.gsi.build_image(speed)
+        hi = self.hi.build_image(course, valid)
+        gsi = self.gsi.build_image(speed, valid)
         ai = self.ai.build_image(bank, pitch)
 
         img = self.image.copy()

@@ -10,17 +10,20 @@ class HeadingIndicator():
             self.background = Image.open('.\\input_images\\HI_background.png').convert('RGBA')
             self.compasscard = Image.open('.\\input_images\\HI_compass_card.png').convert('RGBA')
             self.top = Image.open('.\\input_images\\HI_overlay.png').convert('RGBA')
+            self.fail = Image.open('.\\input_images\\HI_fail.png').convert('RGBA')
         except FileNotFoundError as e:
             print(f'Can\'t open file: {e}')
             sys.exit(1)      
 
-    def build_image(self, heading):
+    def build_image(self, heading, valid=True):
         '''Build a heading indicator image'''
         img = Image.new('RGBA', self.background.size)
         img.paste(self.background, (0,0), self.background)
         img_card_rotated = self.compasscard.rotate(heading)
         img.paste(img_card_rotated, (0,0), img_card_rotated)
         img.paste(self.top, (0,0), self.top)
+        if not valid:
+            img.paste(self.fail, (0,0), self.fail)
         return img
 
     def size(self):

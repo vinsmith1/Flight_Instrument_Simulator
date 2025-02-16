@@ -26,7 +26,7 @@ def animate_instrument_panel(tracklog_filename:str, frame_rate:int, output_image
     time_convert_tracklog_begin = time.time()
     data = convert_tracklog(tracklog_filename)
     if logging:
-        write_dict_to_csv(data, f'{output_image_folder}\\{tracklog_filename.removesuffix('.csv')}_output.csv')
+        write_dict_to_csv(data, len(data["Timestamp"]), f'{output_image_folder}\\{tracklog_filename.removesuffix('.csv')}_output.csv')
     time_convert_tracklog_end = time.time()
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Processing {tracklog_filename} completed in {(time_convert_tracklog_end - time_convert_tracklog_begin):#.2f} seconds')
 
@@ -34,7 +34,7 @@ def animate_instrument_panel(tracklog_filename:str, frame_rate:int, output_image
     time_calculate_frames_begin = time.time()
     frames = calculate_frames(data, frame_rate)
     if logging:
-        write_dict_to_csv(frames, f'{output_image_folder}\\{tracklog_filename.removesuffix('.csv')}_frames.csv')
+        write_dict_to_csv(frames, len(frames["Frame"]), f'{output_image_folder}\\{tracklog_filename.removesuffix('.csv')}_frames.csv')
     time_calculate_frames_end = time.time()
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Frames calculated in {(time_calculate_frames_end - time_calculate_frames_begin):#.2f} seconds')
 
@@ -43,7 +43,7 @@ def animate_instrument_panel(tracklog_filename:str, frame_rate:int, output_image
     render_output(frames, output_image_folder)
     time_render_output_end = time.time()
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Rendered {len(frames['Frame'])} frames in {(time_render_output_end - time_render_output_begin):#.2f} seconds ({((len(frames['Frame']))/(time_render_output_end - time_render_output_begin)):#.2f} frames per second)')
-    
+
     time_benchmark_end = time.time()
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Finished building instrument panel')
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Script completed in {(time_benchmark_end - time_benchmark_begin):#.2f} seconds')
@@ -51,10 +51,10 @@ def animate_instrument_panel(tracklog_filename:str, frame_rate:int, output_image
 if __name__ == "__main__":
     fr = 30
     out = 'output'
-    tracklog = 'tracklog_test.csv'
+    tracklog = 'tracklog-58B30DBB-8A5E-415B-BF35-B41CE9DD29DC.csv'
 
     # without profiling
     animate_instrument_panel(tracklog, fr, out, logging=True)
-    
+
     # with profiling
     # cProfile.run('animate_instrument_panel(tracklog, fr, out)', 'profile_results')

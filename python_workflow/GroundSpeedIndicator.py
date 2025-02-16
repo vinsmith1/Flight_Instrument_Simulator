@@ -22,11 +22,12 @@ class GroundSpeedIndicator():
         try:
             self.background = Image.open('.\\input_images\\GSI_background.png').convert('RGBA')
             self.pointer = Image.open('.\\input_images\\GSI_pointer.png').convert('RGBA')
+            self.fail = Image.open('.\\input_images\\GSI_fail.png').convert('RGBA')
         except FileNotFoundError as e:
             print(f'Can\'t open file: {e}')
             sys.exit(1)
 
-    def build_image(self, speed):
+    def build_image(self, speed, valid=True):
         """Returns an image of the ground speed indicator showing the indicated speed
 
         Args:
@@ -39,6 +40,8 @@ class GroundSpeedIndicator():
         img.paste(self.background, (0,0), self.background)
         img_pointer_rotated = self.pointer.rotate(self.speed_to_angle(speed))
         img.paste(img_pointer_rotated, (0,0), img_pointer_rotated)
+        if not valid:
+            img.paste(self.fail, (0,0), self.fail)
         return img
 
     def speed_to_angle(self, speed):

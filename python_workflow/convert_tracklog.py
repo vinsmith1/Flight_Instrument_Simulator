@@ -1,7 +1,7 @@
 # Filename: convert_tracklog.py
 # Date: December 1, 2024
 # Author: Vincent Smith
-# 
+#
 # Description:
 # Converts a ForeFlight track log in csv format into a new csv with only the data needed to generate the graphics for the instrument panel simulator in blender
 #
@@ -29,14 +29,15 @@ def convert_tracklog(tracklog_filepath:str):
     if not tracklog_filepath or not str(tracklog_filepath).endswith('.csv'):
         print('[{module_name}] Error: invalid file')
         return None
-  
+
     f = open(tracklog_filepath, newline='')
     raw_input_data = list(csv.reader(f, delimiter=','))
-    
+    f.close()
+
     # Omit the first two rows from the ForeFlight log as these contain other information
     header = raw_input_data[2]
     raw_row_data = raw_input_data[3:]
-    
+
     # Remove the trailing rows of raw_row_data where any item in the row is an empty string
     # Do this by appending raw_row_data by row to a new list, stopping once a row with an empty string is reached
     # Speed and course values will typically be empty strings before the other values. This is probably caused by turning off the Sentry while ForeFlight is still recording the tracklog.
@@ -51,7 +52,7 @@ def convert_tracklog(tracklog_filepath:str):
     float_list = []
     for row in filtered_row_data:
         float_list.append(list(float(item) for item in row))
-    
+
     # Convert to dictionary so columns can be processed by name
     data = dict()
     for colidx,col in enumerate(header):
@@ -68,20 +69,20 @@ def convert_tracklog(tracklog_filepath:str):
     # 07 = Pitch
     # 08 = Horizontal Error
     # 09 = Vertical Error
-    
+
     # Eliminate unneeded columns
     data.pop('Latitude')
     data.pop('Longitude')
     data.pop('Horizontal Error')
     data.pop('Vertical Error')
-    
+
     # Convert Timestamp to elapsed time
     start_time = data['Timestamp'][0]
     elapsed_times = []
     for item in data['Timestamp']:
         elapsed_times.append(item-start_time)
     data['Timestamp'] = elapsed_times
-    
+
     # Create a column identifying if a row contains "Valid" data
     # If course = -1.0 and speed = 0.0, "valid" should be False, otherwise valid should be True
     # Looking at a few logs shows that course = -1 and speed = 0 always at the same time, so it is sufficient to just check one
