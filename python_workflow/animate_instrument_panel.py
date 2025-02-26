@@ -31,13 +31,13 @@ def animate_instrument_panel(tracklog_filename:str, frame_rate:int, output_image
     time_convert_tracklog_end = time.time()
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Processing {tracklog_filename} completed in {(time_convert_tracklog_end - time_convert_tracklog_begin):#.2f} seconds')
 
-    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Calculating frames')
+    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Calculating data for all frames')
     time_calculate_frames_begin = time.time()
     frames = calculate_frames(data, frame_rate)
     if logging:
         write_dict_to_csv(frames, len(frames["Frame"]), f'{output_image_folder}\\{tracklog_filename.removesuffix('.csv')}_frames.csv')
     time_calculate_frames_end = time.time()
-    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Frames calculated in {(time_calculate_frames_end - time_calculate_frames_begin):#.2f} seconds')
+    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} {len(frames["Frame"])} frames calculated in {(time_calculate_frames_end - time_calculate_frames_begin):#.2f} seconds')
 
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Rendering frames')
     time_render_frames_begin = time.time()
@@ -45,11 +45,13 @@ def animate_instrument_panel(tracklog_filename:str, frame_rate:int, output_image
     time_render_frames_end = time.time()
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Rendered {len(frames['Frame'])} frames in {(time_render_frames_end - time_render_frames_begin):#.2f} seconds ({((len(frames['Frame']))/(time_render_frames_end - time_render_frames_begin)):#.2f} frames per second)')
 
-    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Rendering video')
-    time_render_video_begin = time.time()
-    render_video(output_image_folder, frame_rate)
-    time_render_video_end = time.time()
-    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Rendered video in {(time_render_video_end - time_render_video_begin):#.2f} seconds')
+    render_video_flag = True
+    if render_video_flag:
+        print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Rendering video')
+        time_render_video_begin = time.time()
+        render_video(output_image_folder, frame_rate)
+        time_render_video_end = time.time()
+        print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Rendered video in {(time_render_video_end - time_render_video_begin):#.2f} seconds')
 
     time_benchmark_end = time.time()
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Finished building instrument panel')
@@ -58,7 +60,9 @@ def animate_instrument_panel(tracklog_filename:str, frame_rate:int, output_image
 if __name__ == "__main__":
     framerate = 30
     output_folder = 'output'
-    tracklog_file = 'tracklog-58B30DBB-8A5E-415B-BF35-B41CE9DD29DC.csv'
+    # tracklog_file = 'tracklog-58B30DBB-8A5E-415B-BF35-B41CE9DD29DC.csv'
+    # tracklog_file = 'tracklog_test.csv'
+    tracklog_file = 'tracklog-2819609B-5140-4011-B8EC-52F2FBB4D875.csv'
 
     # without profiling
     animate_instrument_panel(tracklog_file, framerate, output_folder, logging=True)

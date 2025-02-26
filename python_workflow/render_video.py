@@ -18,6 +18,8 @@ def render_video(image_folder, fps=30):
 
     # Define the codec and create VideoWriter object
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    fourcc = cv2.VideoWriter_fourcc(*'X264')
+    fourcc = cv2.VideoWriter_fourcc(*'avc1')
     output_video_file = os.path.join(image_folder, 'output.mp4')
     video = cv2.VideoWriter(os.path.join(image_folder, 'output.mp4'), fourcc, fps, (width, height))
 
