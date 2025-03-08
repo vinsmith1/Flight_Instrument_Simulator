@@ -11,13 +11,19 @@ class InstrumentPanel:
         _type_: _description_
     """
     # load source images
-    def __init__(self):
+    def __init__(self, with_attitude_indicator=True):
+        """Initialize the instrument panel with the individual instrument classes"""
+        self.with_attitude_indicator = with_attitude_indicator
         self.hi = HeadingIndicator()
         self.gsi = GroundSpeedIndicator()
         self.alt = Altimeter()
-        self.ai = AttitudeIndicator()
-        width = self.hi.width() + self.gsi.width() + self.alt.width() + self.ai.width()
-        self.image = Image.new('RGBA', ( width, max(self.hi.height(), self.gsi.height(), self.alt.height(), self.ai.height()) ), 'CYAN')
+        if with_attitude_indicator:
+            self.ai = AttitudeIndicator()
+            width = self.hi.width() + self.gsi.width() + self.alt.width() + self.ai.width()
+            self.image = Image.new('RGBA', ( width, max(self.hi.height(), self.gsi.height(), self.alt.height(), self.ai.height()) ))
+        else:
+            width = self.hi.width() + self.gsi.width() + self.alt.width()
+            self.image = Image.new('RGBA', ( width, max(self.hi.height(), self.gsi.height(), self.alt.height()) ))
 
     def build_image(self, altitude=0, course=0, speed=0, bank=0, pitch=0, valid=False):
         """Return an image of the instrument panel according to the input parameters
@@ -35,7 +41,8 @@ class InstrumentPanel:
         alt = self.alt.build_image(altitude)
         hi = self.hi.build_image(course, valid)
         gsi = self.gsi.build_image(speed, valid)
-        ai = self.ai.build_image(bank, pitch)
+        if self.with_attitude_indicator:
+            ai = self.ai.build_image(bank, pitch)
 
         img = self.image.copy()
         col = 0
@@ -45,7 +52,8 @@ class InstrumentPanel:
         col += hi.width
         img.paste(alt, (col, 0), alt)
         col += alt.width
-        img.paste(ai, (col, 0), ai)
+        if self.with_attitude_indicator:
+            img.paste(ai, (col, 0), ai)
         return img
 
     def size(self):

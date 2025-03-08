@@ -3,7 +3,7 @@
 from multiprocessing import Pool
 from InstrumentPanel import InstrumentPanel
 
-instrument_panel_image = InstrumentPanel()
+instrument_panel_image = InstrumentPanel(with_attitude_indicator=False)
 
 def render_frames(frames:dict, output_folder:str, filename_prefix:str='image_'):
     """Render frame info to output image sequence
@@ -23,4 +23,5 @@ def render_frames(frames:dict, output_folder:str, filename_prefix:str='image_'):
 def render_frame(altitude, course, speed, bank, pitch, frame, valid, filepath_prefix, num_zeros):
     '''Render a single frame to an image file'''
     tmp_image = instrument_panel_image.build_image(altitude, course, speed, bank, pitch, valid)
+    tmp_image = tmp_image.resize((tmp_image.width//4, tmp_image.height//4))
     tmp_image.save(f'{filepath_prefix}{frame:0{num_zeros}d}.png', compress_level=1)

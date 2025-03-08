@@ -9,7 +9,7 @@ from render_frames import render_frames
 from render_video import render_video
 from write_dict_to_csv import write_dict_to_csv
 
-def animate_instrument_panel(tracklog_filename:str, frame_rate:int, output_image_folder:str, logging=False):
+def animate_instrument_panel(tracklog_filepath:str, frame_rate:int, output_folder:str, logging=False):
     """Animate the instrument panel of an aircraft based on a tracklog file
     
     Args:
@@ -20,36 +20,39 @@ def animate_instrument_panel(tracklog_filename:str, frame_rate:int, output_image
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Started building instrument panel')
 
     # Create output directory for rendered images if it doesn't exist
-    if not os.path.exists(output_image_folder):
-        os.makedirs(output_image_folder)
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+    
+    # Extract just the filename from the full path
+    tracklog_filename = os.path.basename(tracklog_filepath)
 
-    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Processing {tracklog_filename}')
+    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Processing {tracklog_filepath}')
     time_convert_tracklog_begin = time.time()
-    data = convert_tracklog(tracklog_filename)
+    data = convert_tracklog(tracklog_filepath)
     if logging:
-        write_dict_to_csv(data, len(data["Timestamp"]), f'{output_image_folder}\\{tracklog_filename.removesuffix('.csv')}_output.csv')
+        write_dict_to_csv(data, len(data["Timestamp"]), f'{output_folder}\\{tracklog_filename.removesuffix('.csv')}_output.csv')
     time_convert_tracklog_end = time.time()
-    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Processing {tracklog_filename} completed in {(time_convert_tracklog_end - time_convert_tracklog_begin):#.2f} seconds')
+    print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Processing {tracklog_filepath} completed in {(time_convert_tracklog_end - time_convert_tracklog_begin):#.2f} seconds')
 
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Calculating data for all frames')
     time_calculate_frames_begin = time.time()
     frames = calculate_frames(data, frame_rate)
     if logging:
-        write_dict_to_csv(frames, len(frames["Frame"]), f'{output_image_folder}\\{tracklog_filename.removesuffix('.csv')}_frames.csv')
+        write_dict_to_csv(frames, len(frames["Frame"]), f'{output_folder}\\{tracklog_filename.removesuffix('.csv')}_frames.csv')
     time_calculate_frames_end = time.time()
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} {len(frames["Frame"])} frames calculated in {(time_calculate_frames_end - time_calculate_frames_begin):#.2f} seconds')
 
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Rendering frames')
     time_render_frames_begin = time.time()
-    render_frames(frames, output_image_folder)
+    render_frames(frames, output_folder)
     time_render_frames_end = time.time()
     print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Rendered {len(frames['Frame'])} frames in {(time_render_frames_end - time_render_frames_begin):#.2f} seconds ({((len(frames['Frame']))/(time_render_frames_end - time_render_frames_begin)):#.2f} frames per second)')
 
-    render_video_flag = True
+    render_video_flag = False
     if render_video_flag:
         print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Rendering video')
         time_render_video_begin = time.time()
-        render_video(output_image_folder, frame_rate)
+        render_video(output_folder, frame_rate)
         time_render_video_end = time.time()
         print(f'[{module_name}] {time.strftime("%Y-%m-%d %H:%M:%S")} Rendered video in {(time_render_video_end - time_render_video_begin):#.2f} seconds')
 
@@ -59,13 +62,14 @@ def animate_instrument_panel(tracklog_filename:str, frame_rate:int, output_image
 
 if __name__ == "__main__":
     framerate = 30
-    output_folder = 'output'
+    output_folder = r'F:\Flying Videos\2022-07-09\instrument_panel'
     # tracklog_file = 'tracklog-58B30DBB-8A5E-415B-BF35-B41CE9DD29DC.csv'
     # tracklog_file = 'tracklog_test.csv'
-    tracklog_file = 'tracklog-2819609B-5140-4011-B8EC-52F2FBB4D875.csv'
+    # tracklog_file = 'tracklog-2819609B-5140-4011-B8EC-52F2FBB4D875.csv'
+    tracklog_filepath = r'F:\Flying Videos\2022-07-09\tracklog-2022-07-09.csv'
 
     # without profiling
-    animate_instrument_panel(tracklog_file, framerate, output_folder, logging=True)
+    animate_instrument_panel(tracklog_filepath, framerate, output_folder, logging=True)
 
     # with profiling
-    # cProfile.run('animate_instrument_panel(tracklog, fr, out)', 'profile_results')
+    # cProfile.run('animate_instrument_panel(tracklog, framerate, output_folder)', 'profile_results')
